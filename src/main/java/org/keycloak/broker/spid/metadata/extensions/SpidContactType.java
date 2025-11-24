@@ -1,5 +1,9 @@
 package org.keycloak.broker.spid.metadata.extensions;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.keycloak.broker.spid.SpidIdentityProviderConfig;
 import org.keycloak.dom.saml.v2.metadata.ContactType;
 import org.keycloak.dom.saml.v2.metadata.ContactTypeType;
@@ -16,11 +20,14 @@ public abstract class SpidContactType extends ContactType {
     public static final String SPID_METADATA_EXTENSIONS_NS = "https://spid.gov.it/saml-extensions";
 
     protected Document doc;
+    protected Map<String, String> otherNamespaces = new HashMap<>();
 
     protected SpidContactType(final SpidIdentityProviderConfig config) throws ConfigurationException {
         super(ContactTypeType.OTHER);
         this.setExtensions(new ExtensionsType());
         doc = DocumentUtil.createDocument();
+
+        addOtherNamespace("spid", SPID_METADATA_EXTENSIONS_NS);
     }
 
     /**
@@ -54,4 +61,30 @@ public abstract class SpidContactType extends ContactType {
         getExtensions().addExtension(element);
 
     }
+
+    /**
+     * Add other namespace to the element
+     * @param prefix
+     * @param uri
+     */
+    public void addOtherNamespace(String prefix, String uri) {
+        otherNamespaces.put(prefix, uri);
+    }
+
+    /**
+     * Remove other namespace
+     * @param prefix
+     */
+    public void removeOtherNamespace(String prefix) {
+        otherNamespaces.remove(prefix);
+    }
+
+    /**
+     * Gets a map that contains namespaces that aren't standard
+     * @return always non-null
+     */
+    public Map<String, String> getOtherNamespaces() {
+        return Collections.unmodifiableMap(otherNamespaces);
+    }
+
 }
