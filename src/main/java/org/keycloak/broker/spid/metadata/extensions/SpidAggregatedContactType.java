@@ -2,18 +2,10 @@ package org.keycloak.broker.spid.metadata.extensions;
 
 import org.jboss.logging.Logger;
 import org.keycloak.broker.spid.SpidIdentityProviderConfig;
-import org.keycloak.dom.saml.v2.metadata.ContactType;
-import org.keycloak.dom.saml.v2.metadata.ContactTypeType;
-import org.keycloak.dom.saml.v2.metadata.ExtensionsType;
 import org.keycloak.saml.common.exceptions.ConfigurationException;
-import org.keycloak.saml.common.util.DocumentUtil;
 import org.keycloak.saml.common.util.StringUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -27,6 +19,7 @@ public class SpidAggregatedContactType extends SpidContactType {
         if (!config.isAggregatorEnabled()) {
             return Optional.empty();
         }
+        
         if (StringUtil.isNullOrEmpty(config.getAggregatedCompany())) {
             logger.warn("Aggregated contact missing company, skipping creation.");
             return Optional.empty();

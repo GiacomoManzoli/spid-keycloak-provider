@@ -190,6 +190,9 @@ public class SpidSpMetadataResourceProviderTest {
         assertTrue(metadata.contains("Aggregator S.r.l."), "Aggregator company missing");
         assertTrue(metadata.contains("<spid:Private"), "Aggregated type missing");
         assertTrue(metadata.contains("Customer S.p.A."), "Aggregated company missing");
+
+        assertTrue(metadata.contains("spid:entityType=\"spid:aggregator\""), "ContactType spid:aggregator missing");
+        assertTrue(metadata.contains("spid:entityType=\"spid:aggregated\""), "ContactType spid:aggregated missing");
     }
 
     @Test
@@ -204,6 +207,9 @@ public class SpidSpMetadataResourceProviderTest {
         assertTrue(metadata.contains("spid:KeyDescriptor"), "Validation KeyDescriptor missing");
         assertTrue(metadata.contains("md:use=\"spid:validation\""), "Validation use attribute missing");
         assertTrue(metadata.contains("CERT_SUBCA_BASE64"), "Validation certificate missing");
+
+        assertTrue(metadata.contains("spid:entityType=\"spid:aggregator\""), "ContactType spid:aggregator missing");
+        assertTrue(metadata.contains("spid:entityType=\"spid:aggregated\""), "ContactType spid:aggregated missing");
     }
 
     private Map<String, String> mockPublicSPConfig() {
