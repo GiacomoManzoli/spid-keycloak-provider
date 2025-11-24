@@ -24,9 +24,6 @@ import org.keycloak.models.IdentityProviderModel;
 import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.provider.ProviderConfigurationBuilder;
 
-
-import org.keycloak.broker.spid.utils.AggregatorContactType;
-
 public class SpidIdentityProviderConfig extends SAMLIdentityProviderConfig  {
 
     public static final String ORGANIZATION_NAMES = "organizationNames";
@@ -50,24 +47,162 @@ public class SpidIdentityProviderConfig extends SAMLIdentityProviderConfig  {
     public static final String BILLING_CONTACT_SITE_ZIP_CODE = "billingContactSiteZipCode";
     public static final String BILLING_CONTACT_SITE_PROVINCE = "billingContactSiteProvince";
     public static final String BILLING_CONTACT_SITE_COUNTRY = "billingContactSiteCountry";
-
-    // ---- Aggregator info ---- 
-    public static final String AGGREGATOR_CONTACT_IPA_CODE = "aggregatorConactIpaCode";
-    public static final String AGGREGATOR_CONTACT_VAT_NUMBER = "aggregatorConactVatNumber";
-    public static final String AGGREGATOR_CONTACT_FISCAL_CODE = "aggregatorConactFiscalCode";
-    public static final String AGGREGATOR_CONTACT_TYPE = "aggregatorContactType";
-    public static final String AGGREGATOR_CONTACT_COMPANY = "aggregatorContactCompany";
-    public static final String AGGREGATOR_CONTACT_PHONE = "aggregatorContactPhone";
-    public static final String AGGREGATOR_CONTACT_EMAIL = "aggregatorContactEmail";
-
     public static final String SPID_RESPONSE_DEBUG_ENABLED = "debugEnabled";
     public static final String METADATA_URL = "metadataUrl";
+
+    // ---- Aggregator info ---- 
+    public static final String AGGREGATOR_ENABLED = "aggregatorEnabled";
+    public static final String AGGREGATOR_ACTIVITY = "aggregatorActivity";
+    public static final String AGGREGATOR_COMPANY = "aggregatorCompany";
+    public static final String AGGREGATOR_EMAIL = "aggregatorEmail";
+    public static final String AGGREGATOR_PHONE = "aggregatorPhone";
+    public static final String AGGREGATOR_IPA_CODE = "aggregatorIpaCode";
+    public static final String AGGREGATOR_VAT_NUMBER = "aggregatorVatNumber";
+    public static final String AGGREGATOR_FISCAL_CODE = "aggregatorFiscalCode";
+    public static final String AGGREGATOR_VALIDATION_CERT = "aggregatorValidationCert";
+    
+    // ---- Aggregated info ---- 
+    public static final String AGGREGATED_COMPANY = "aggregatedCompany";
+    public static final String AGGREGATED_EMAIL = "aggregatedEmail";
+    public static final String AGGREGATED_PHONE = "aggregatedPhone";
+    public static final String AGGREGATED_IPA_CODE = "aggregatedIpaCode";
+    public static final String AGGREGATED_VAT_NUMBER = "aggregatedVatNumber";
+    public static final String AGGREGATED_FISCAL_CODE = "aggregatedFiscalCode";
+    public static final String AGGREGATED_TYPE = "aggregatedType";
 
     public SpidIdentityProviderConfig(){
     }
 
     public SpidIdentityProviderConfig(IdentityProviderModel identityProviderModel) {
         super(identityProviderModel);
+    }
+
+    public boolean isAggregatorEnabled() {
+        return Boolean.valueOf(getConfig().get(AGGREGATOR_ENABLED));
+    }
+
+    public void setAggregatorEnabled(boolean enabled) {
+        getConfig().put(AGGREGATOR_ENABLED, String.valueOf(enabled));
+    }
+
+    public String getAggregatorActivity() {
+        return getConfig().get(AGGREGATOR_ACTIVITY);
+    }
+
+    public void setAggregatorActivity(String aggregatorActivity) {
+        getConfig().put(AGGREGATOR_ACTIVITY, aggregatorActivity);
+    }
+
+    public String getAggregatorCompany() {
+        return getConfig().get(AGGREGATOR_COMPANY);
+    }
+
+    public void setAggregatorCompany(String aggregatorCompany) {
+        getConfig().put(AGGREGATOR_COMPANY, aggregatorCompany);
+    }
+
+    public String getAggregatorEmail() {
+        return getConfig().get(AGGREGATOR_EMAIL);
+    }
+
+    public void setAggregatorEmail(String aggregatorEmail) {
+        getConfig().put(AGGREGATOR_EMAIL, aggregatorEmail);
+    }
+
+    public String getAggregatorPhone() {
+        return getConfig().get(AGGREGATOR_PHONE);
+    }
+
+    public void setAggregatorPhone(String aggregatorPhone) {
+        getConfig().put(AGGREGATOR_PHONE, aggregatorPhone);
+    }
+
+    public String getAggregatorIpaCode() {
+        return getConfig().get(AGGREGATOR_IPA_CODE);
+    }
+
+    public void setAggregatorIpaCode(String aggregatorIpaCode) {
+        getConfig().put(AGGREGATOR_IPA_CODE, aggregatorIpaCode);
+    }
+
+    public String getAggregatorVatNumber() {
+        return getConfig().get(AGGREGATOR_VAT_NUMBER);
+    }
+
+    public void setAggregatorVatNumber(String aggregatorVatNumber) {
+        getConfig().put(AGGREGATOR_VAT_NUMBER, aggregatorVatNumber);
+    }
+
+    public String getAggregatorFiscalCode() {
+        return getConfig().get(AGGREGATOR_FISCAL_CODE);
+    }
+
+    public void setAggregatorFiscalCode(String aggregatorFiscalCode) {
+        getConfig().put(AGGREGATOR_FISCAL_CODE, aggregatorFiscalCode);
+    }
+
+    public String getAggregatorValidationCert() {
+        return getConfig().get(AGGREGATOR_VALIDATION_CERT);
+    }
+
+    public void setAggregatorValidationCert(String aggregatorValidationCert) {
+        getConfig().put(AGGREGATOR_VALIDATION_CERT, aggregatorValidationCert);
+    }
+
+    public String getAggregatedCompany() {
+        return getConfig().get(AGGREGATED_COMPANY);
+    }
+
+    public void setAggregatedCompany(String aggregatedCompany) {
+        getConfig().put(AGGREGATED_COMPANY, aggregatedCompany);
+    }
+
+    public String getAggregatedEmail() {
+        return getConfig().get(AGGREGATED_EMAIL);
+    }
+
+    public void setAggregatedEmail(String aggregatedEmail) {
+        getConfig().put(AGGREGATED_EMAIL, aggregatedEmail);
+    }
+
+    public String getAggregatedPhone() {
+        return getConfig().get(AGGREGATED_PHONE);
+    }
+
+    public void setAggregatedPhone(String aggregatedPhone) {
+        getConfig().put(AGGREGATED_PHONE, aggregatedPhone);
+    }
+
+    public String getAggregatedIpaCode() {
+        return getConfig().get(AGGREGATED_IPA_CODE);
+    }
+
+    public void setAggregatedIpaCode(String aggregatedIpaCode) {
+        getConfig().put(AGGREGATED_IPA_CODE, aggregatedIpaCode);
+    }
+
+    public String getAggregatedVatNumber() {
+        return getConfig().get(AGGREGATED_VAT_NUMBER);
+    }
+
+    public void setAggregatedVatNumber(String aggregatedVatNumber) {
+        getConfig().put(AGGREGATED_VAT_NUMBER, aggregatedVatNumber);
+    }
+
+    public String getAggregatedFiscalCode() {
+        return getConfig().get(AGGREGATED_FISCAL_CODE);
+    }
+
+    public void setAggregatedFiscalCode(String aggregatedFiscalCode) {
+        getConfig().put(AGGREGATED_FISCAL_CODE, aggregatedFiscalCode);
+    }
+
+    public String getAggregatedType() {
+        return getConfig().get(AGGREGATED_TYPE);
+    }
+
+    public void setAggregatedType(String aggregatedType) {
+        getConfig().put(AGGREGATED_TYPE, aggregatedType);
     }
 
     public String getIdpEntityId() {
@@ -238,76 +373,12 @@ public class SpidIdentityProviderConfig extends SAMLIdentityProviderConfig  {
         getConfig().put(BILLING_CONTACT_SITE_CITY, billingContactSiteCity);
     }
 
-    // ---- Aggregator infos ----
-    public String getAggregatorContactIpaCode() {
-        return getConfig().get(AGGREGATOR_CONTACT_IPA_CODE);
-    }
-
-    public void setAggregatorContactIpaCode(String aggregatorContactIpaCode) {
-        getConfig().put(AGGREGATOR_CONTACT_IPA_CODE, aggregatorContactIpaCode);
-    }
-
-    public String getAggregatorContactVatNumber() {
-        return getConfig().get(AGGREGATOR_CONTACT_VAT_NUMBER);
-    }
-
-    public void setAggregatorContactVatNumber(String aggregatorContactVatNumber) {
-        getConfig().put(AGGREGATOR_CONTACT_VAT_NUMBER, aggregatorContactVatNumber);
-    }
-
-    public String getAggregatorContactFiscalCode() {
-        return getConfig().get(AGGREGATOR_CONTACT_FISCAL_CODE);
-    }
-
-    public void setAggregatorContactFiscalCode(String aggregatorContactFiscalCode) {
-        getConfig().put(AGGREGATOR_CONTACT_FISCAL_CODE, aggregatorContactFiscalCode);
-    }
-
-    public String getAggregatorContactType() {
-        return getConfig().get(AGGREGATOR_CONTACT_TYPE);
-    }
-
-    public void setAggregatorContactType(String aggregatorContactType) {
-        getConfig().put(AGGREGATOR_CONTACT_TYPE, aggregatorContactType);
-    }
-
-    public String getAggregatorContactCompany() {
-        return getConfig().get(AGGREGATOR_CONTACT_COMPANY);
-    }
-
-    public void setAggregatorContactCompany(String aggregatorContactCompany) {
-        getConfig().put(AGGREGATOR_CONTACT_COMPANY, aggregatorContactCompany);
-    }
-
-    public String getAggregatorContactPhone() {
-        return getConfig().get(AGGREGATOR_CONTACT_PHONE);
-    }
-
-    public void setAggregatorContactPhone(String aggregatorContactPhone) {
-        getConfig().put(AGGREGATOR_CONTACT_PHONE, aggregatorContactPhone);
-    }
-
-    public String getAggregatorContactEmail() {
-        return getConfig().get(AGGREGATOR_CONTACT_EMAIL);
-    }
-
-    public void setAggregatorContactEmail(String aggregatorContactEmail) {
-        getConfig().put(AGGREGATOR_CONTACT_EMAIL, aggregatorContactEmail);
-    }
-
-
-
     public boolean isDebugEnabled() {
         return Boolean.valueOf(getConfig().get(SPID_RESPONSE_DEBUG_ENABLED));
     }
 
     public void setDebugEnabled(boolean isDebugEnabled) {
         getConfig().put(SPID_RESPONSE_DEBUG_ENABLED, String.valueOf(isDebugEnabled));
-    }
-
-    public AggregatorContactType getAggregatorContactTypeEnum() {
-        String raw = getConfig().get(AGGREGATOR_CONTACT_TYPE);
-        return AggregatorContactType.fromString(raw);
     }
 
     public static List<ProviderConfigProperty> getConfigProperties() {
@@ -319,6 +390,130 @@ public class SpidIdentityProviderConfig extends SAMLIdentityProviderConfig  {
         .defaultValue("/realms/<realm>/" + SpidSpMetadataResourceProviderFactory.ID)
         .label("identity-provider.saml.url.metadata")
         .helpText("identity-provider.saml.url.metadata.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_ENABLED)
+        .type(ProviderConfigProperty.BOOLEAN_TYPE)
+        .label("identity-provider.spid.aggregator.enabled")
+        .helpText("identity-provider.spid.aggregator.enabled.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_ACTIVITY)
+        .type(ProviderConfigProperty.LIST_TYPE)
+        .label("identity-provider.spid.aggregator.activity")
+        .helpText("identity-provider.spid.aggregator.activity.tooltip")
+            .options(
+            "PublicServicesFullAggregator",
+            "PublicServicesLightAggregator",
+            "PrivateServicesFullAggregator",
+            "PrivateServicesLightAggregator",
+            "PublicServicesFullOperator",
+            "PublicServicesLightOperator"
+        )
+        .add()
+
+        .property()
+        .name(AGGREGATOR_COMPANY)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregator.company")
+        .helpText("identity-provider.spid.aggregator.company.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_EMAIL)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregator.email")
+        .helpText("identity-provider.spid.aggregator.email.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_PHONE)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregator.phone")
+        .helpText("identity-provider.spid.aggregator.phone.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_IPA_CODE)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregator.ipaCode")
+        .helpText("identity-provider.spid.aggregator.ipaCode.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_VAT_NUMBER)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregator.vatNumber")
+        .helpText("identity-provider.spid.aggregator.vatNumber.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_FISCAL_CODE)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregator.fiscalCode")
+        .helpText("identity-provider.spid.aggregator.fiscalCode.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATOR_VALIDATION_CERT)
+        .type(ProviderConfigProperty.TEXT_TYPE)
+        .label("identity-provider.spid.aggregator.validationCert")
+        .helpText("identity-provider.spid.aggregator.validationCert.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATED_COMPANY)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregated.company")
+        .helpText("identity-provider.spid.aggregated.company.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATED_EMAIL)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregated.email")
+        .helpText("identity-provider.spid.aggregated.email.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATED_PHONE)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregated.phone")
+        .helpText("identity-provider.spid.aggregated.phone.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATED_IPA_CODE)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregated.ipaCode")
+        .helpText("identity-provider.spid.aggregated.ipaCode.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATED_VAT_NUMBER)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregated.vatNumber")
+        .helpText("identity-provider.spid.aggregated.vatNumber.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATED_FISCAL_CODE)
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .label("identity-provider.spid.aggregated.fiscalCode")
+        .helpText("identity-provider.spid.aggregated.fiscalCode.tooltip")
+        .add()
+
+        .property()
+        .name(AGGREGATED_TYPE)
+        .type(ProviderConfigProperty.LIST_TYPE)
+        .label("identity-provider.spid.aggregated.type")
+        .helpText("identity-provider.spid.aggregated.type.tooltip")
+        .options("Public",
+            "PublicServicesOperator",
+            "PublicOperator",
+            "Private")
         .add()
 
         .property()
@@ -467,70 +662,6 @@ public class SpidIdentityProviderConfig extends SAMLIdentityProviderConfig  {
         .label("identity-provider.spid.site.countryCode.billing")
         .helpText("identity-provider.spid.site.countryCode.billing.tooltip")
         .add()
-
-        .property()
-        .name(AGGREGATOR_CONTACT_IPA_CODE)
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .label("identity-provider.spid.aggregator.ipaCode")
-        .helpText("identity-provider.spid.aggregator.ipaCode.tooltip")
-        .add()
-
-        .property()
-        .name(AGGREGATOR_CONTACT_VAT_NUMBER)
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .label("identity-provider.spid.aggregator.vatNumber")
-        .helpText("identity-provider.spid.aggregator.vatNumber.tooltip")
-        .add()
-
-        .property()
-        .name(AGGREGATOR_CONTACT_FISCAL_CODE)
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .label("identity-provider.spid.aggregator.fiscalCode")
-        .helpText("identity-provider.spid.aggregator.fiscalCode.tooltip")
-        .add()
-
-        // .property()
-        // .name(AGGREGATOR_CONTACT_TYPE)
-        // .type(ProviderConfigProperty.STRING_TYPE)
-        // .label("identity-provider.spid.aggregator.type")
-        // .helpText("identity-provider.spid.aggregator.type.tooltip")
-        // .add()
-        .property()
-        .name(AGGREGATOR_CONTACT_TYPE)
-        .type(ProviderConfigProperty.LIST_TYPE)
-        .label("identity-provider.spid.aggregator.type")
-        .helpText("identity-provider.spid.aggregator.type.tooltip")
-        .options(
-            "PublicServicesFullAggregator",
-            "PublicServicesLightAggregator",
-            "PrivateServicesFullAggregator",
-            "PrivateServicesLightAggregator",
-            "PublicServicesFullOperator",
-            "PublicServicesLightOperator"
-        )
-        .add()
-
-        .property()
-        .name(AGGREGATOR_CONTACT_COMPANY)
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .label("identity-provider.spid.aggregator.company")
-        .helpText("identity-provider.spid.aggregator.company.tooltip")
-        .add()
-
-        .property()
-        .name(AGGREGATOR_CONTACT_PHONE)
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .label("identity-provider.spid.aggregator.phone")
-        .helpText("identity-provider.spid.aggregator.phone.tooltip")
-        .add()
-
-        .property()
-        .name(AGGREGATOR_CONTACT_EMAIL)
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .label("identity-provider.spid.aggregator.email")
-        .helpText("identity-provider.spid.aggregator.email.tooltip")
-        .add()
-
 
         .property()
         .name(SPID_RESPONSE_DEBUG_ENABLED)

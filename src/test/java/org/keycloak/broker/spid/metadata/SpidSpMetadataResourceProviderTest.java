@@ -79,6 +79,7 @@ import java.util.stream.StreamSupport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -165,7 +166,7 @@ public class SpidSpMetadataResourceProviderTest {
 
         Response response = invitationResourceProvider.get();
         assertEquals(200, response.getStatus());
-        // assertMetaData(response.getEntity().toString(), "/metadata/expected_metadata_public_SP.xml");
+        assertMetaData(response.getEntity().toString(), "/metadata/expected_metadata_public_SP.xml");
     }
 
     @Test
@@ -174,7 +175,35 @@ public class SpidSpMetadataResourceProviderTest {
 
         Response response = invitationResourceProvider.get();
         assertEquals(200, response.getStatus());
-        // assertMetaData(response.getEntity().toString(), "/metadata/expected_metadata_private_SP.xml");
+        assertMetaData(response.getEntity().toString(), "/metadata/expected_metadata_private_SP.xml");
+    }
+
+    @Test
+    void get_withAggregatorFullConfiguration_shouldContainAggregatorExtensions() {
+        mockSPIDProviders(mockAggregatorFullConfig(), "idp1");
+
+        Response response = invitationResourceProvider.get();
+        assertEquals(200, response.getStatus());
+        String metadata = response.getEntity().toString();
+
+        assertTrue(metadata.contains("spid:PrivateServicesFullAggregator"), "Aggregator activity tag missing");
+        assertTrue(metadata.contains("Aggregator S.r.l."), "Aggregator company missing");
+        assertTrue(metadata.contains("<spid:Private"), "Aggregated type missing");
+        assertTrue(metadata.contains("Customer S.p.A."), "Aggregated company missing");
+    }
+
+    @Test
+    void get_withAggregatorLightConfiguration_shouldContainValidationKey() {
+        mockSPIDProviders(mockAggregatorLightConfig(), "idp1");
+
+        Response response = invitationResourceProvider.get();
+        assertEquals(200, response.getStatus());
+        String metadata = response.getEntity().toString();
+
+        assertTrue(metadata.contains("spid:PrivateServicesLightAggregator"), "Light activity tag missing");
+        assertTrue(metadata.contains("spid:KeyDescriptor"), "Validation KeyDescriptor missing");
+        assertTrue(metadata.contains("md:use=\"spid:validation\""), "Validation use attribute missing");
+        assertTrue(metadata.contains("CERT_SUBCA_BASE64"), "Validation certificate missing");
     }
 
     private Map<String, String> mockPublicSPConfig() {
@@ -211,6 +240,43 @@ public class SpidSpMetadataResourceProviderTest {
         providerConfig.put(SpidIdentityProviderConfig.BILLING_CONTACT_SITE_PROVINCE, "Province");
         providerConfig.put(SpidIdentityProviderConfig.BILLING_CONTACT_SITE_COUNTRY, "IT");
 
+        return providerConfig;
+    }
+
+    private Map<String, String> mockAggregatorFullConfig() {
+        Map<String, String> providerConfig = mockPrivateSPConfig();
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_ENABLED, "true");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_ACTIVITY, "PrivateServicesFullAggregator");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_COMPANY, "Aggregator S.r.l.");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_EMAIL, "aggregator@domain.test");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_PHONE, "+39 111 222 333");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_VAT_NUMBER, "IT01234567890");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_FISCAL_CODE, "CF_manager");
+
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_COMPANY, "Customer S.p.A.");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_EMAIL, "contact@customer.test");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_VAT_NUMBER, "IT99887766554");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_FISCAL_CODE, "CF_customer");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_TYPE, "Private");
+        return providerConfig;
+    }
+
+    private Map<String, String> mockAggregatorLightConfig() {
+        Map<String, String> providerConfig = mockPrivateSPConfig();
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_ENABLED, "true");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_ACTIVITY, "PrivateServicesLightAggregator");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_COMPANY, "Aggregator S.r.l.");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_EMAIL, "aggregator@domain.test");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_PHONE, "+39 111 222 333");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_VAT_NUMBER, "IT01234567890");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_FISCAL_CODE, "CF_manager");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATOR_VALIDATION_CERT, "CERT_SUBCA_BASE64");
+
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_COMPANY, "Customer S.p.A.");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_EMAIL, "contact@customer.test");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_VAT_NUMBER, "IT99887766554");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_FISCAL_CODE, "CF_customer");
+        providerConfig.put(SpidIdentityProviderConfig.AGGREGATED_TYPE, "Private");
         return providerConfig;
     }
 
@@ -308,4 +374,3 @@ public class SpidSpMetadataResourceProviderTest {
 
     }
 }
-

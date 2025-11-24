@@ -19,6 +19,8 @@ import org.jboss.logging.Logger;
 import org.keycloak.broker.spid.SpidIdentityProviderConfig;
 import org.keycloak.broker.spid.metadata.extensions.SpidBillingContactType;
 import org.keycloak.broker.spid.metadata.extensions.SpidOrganizationType;
+import org.keycloak.broker.spid.metadata.extensions.SpidAggregatorContactType;
+import org.keycloak.broker.spid.metadata.extensions.SpidAggregatedContactType;
 import org.keycloak.broker.spid.metadata.extensions.SpidOtherContactType;
 import org.keycloak.common.util.PemUtils;
 import org.keycloak.crypto.Algorithm;
@@ -286,7 +288,7 @@ public class SpidSpMetadataResourceProvider implements RealmResourceProvider {
     private String entityDescriptorAsString(final EntityDescriptorType entityDescriptor) throws ProcessingException {
         StringWriter sw = new StringWriter();
         XMLStreamWriter writer = StaxUtil.getXMLStreamWriter(sw);
-        SAMLMetadataWriter metadataWriter = new SAMLMetadataWriter(writer);
+        SpidSAMLMetadataWriter metadataWriter = new SpidSAMLMetadataWriter(writer); // Custom writer to handle the extra attributes
         metadataWriter.writeEntityDescriptor(entityDescriptor);
         return sw.toString();
     }
@@ -305,8 +307,13 @@ public class SpidSpMetadataResourceProvider implements RealmResourceProvider {
         // Organization
         SpidOrganizationType.build(config).ifPresent(entityDescriptor::setOrganization);
 
-        // ContactPerson type=OTHER
-        SpidOtherContactType.build(config).ifPresent(entityDescriptor::addContactPerson);
+        if (config.isAggregatorEnabled()) {
+            SpidAggregatorContactType.build(config).ifPresent(entityDescriptor::addContactPerson);
+            SpidAggregatedContactType.build(config).ifPresent(entityDescriptor::addContactPerson);
+        } else {
+            // ContactPerson type=OTHER
+            SpidOtherContactType.build(config).ifPresent(entityDescriptor::addContactPerson);
+        }
 
         // ContactPerson type=BILLING
         SpidBillingContactType.build(config).ifPresent(entityDescriptor::addContactPerson);
@@ -347,7 +354,8 @@ public class SpidSpMetadataResourceProvider implements RealmResourceProvider {
     {
         try {
             byte[] bytes = MessageDigest.getInstance("MD5").digest(data.getBytes(StandardCharsets.UTF_8));
-            return new BigInteger(1, bytes).toString(16);
+            // Left pad with zeros to always get 32 hex chars (MD5 is 128 bits)
+            return String.format("%032x", new BigInteger(1, bytes));
         }
         catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
