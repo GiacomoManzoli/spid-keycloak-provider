@@ -172,3 +172,9 @@ https://github.com/redhat-italy/keycloak-spid-provider.
 
 This project is released under the Apache License 2.0, same as the main Keycloak
 package.
+
+## Changes to the original project
+
+- Support for "Soggetto Aggregatore" both Light and Full
+- Support for SPID authentication level (`SPID_AUTHN_LEVEL`) is now available as a `user session note`, making it accessible within the Keycloak access token.
+- Different metadata URL `/realms/<realm>/spid-metadata` instead of `/realms/<realm>/spid-sp-metadata`
