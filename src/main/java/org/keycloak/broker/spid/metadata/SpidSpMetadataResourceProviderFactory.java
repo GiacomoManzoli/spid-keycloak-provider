@@ -22,7 +22,7 @@ import org.keycloak.services.resource.RealmResourceProviderFactory;
 
 public class SpidSpMetadataResourceProviderFactory implements RealmResourceProviderFactory {
 
-    public static final String ID = "spid-sp-metadata";
+    public static final String ID = "spid-metadata";
 
     @Override
     public String getId() {
