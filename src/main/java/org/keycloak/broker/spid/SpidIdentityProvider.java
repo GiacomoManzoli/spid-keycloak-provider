@@ -96,6 +96,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
@@ -263,8 +264,11 @@ public class SpidIdentityProvider extends AbstractIdentityProvider<SpidIdentityP
         AuthnStatementType authn =  (AuthnStatementType)context.getContextData().get(SpidSAMLEndpoint.SAML_AUTHN_STATEMENT);
         if (authn != null && authn.getSessionIndex() != null) {
             authSession.setUserSessionNote(SpidSAMLEndpoint.SAML_FEDERATED_SESSION_INDEX, authn.getSessionIndex());
-
         }
+
+        String spidLevel = (String) context.getContextData().get(SpidSAMLEndpoint.SPID_AUTHN_LEVEL);
+        spidLevel = spidLevel != null ? spidLevel : "";
+        authSession.setUserSessionNote(SpidSAMLEndpoint.SPID_AUTHN_LEVEL, spidLevel);
     }
 
     @Override

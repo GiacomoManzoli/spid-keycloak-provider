@@ -145,6 +145,7 @@ public class SpidSAMLEndpoint {
     public static final String SAML_LOGIN_RESPONSE = "SAML_LOGIN_RESPONSE";
     public static final String SAML_ASSERTION = "SAML_ASSERTION";
     public static final String SAML_AUTHN_STATEMENT = "SAML_AUTHN_STATEMENT";
+    public static final String SPID_AUTHN_LEVEL = "SPID_AUTHN_LEVEL";
     protected RealmModel realm;
     protected EventBuilder event;
     protected SpidIdentityProviderConfig config;
@@ -558,6 +559,8 @@ public class SpidSAMLEndpoint {
                 BrokeredIdentityContext identity = new BrokeredIdentityContext(principal, config);
                 identity.getContextData().put(SAML_LOGIN_RESPONSE, responseType);
                 identity.getContextData().put(SAML_ASSERTION, assertion);
+                identity.getContextData().put(SPID_AUTHN_LEVEL, getSpidAuthnContextClassRef(assertionElement));
+
                 identity.setAuthenticationSession(authSession);
 
                 identity.setUsername(principal);
@@ -930,6 +933,19 @@ public class SpidSAMLEndpoint {
         }
 
         return true;
+    }
+
+    /**
+     * Retrives the SPID Authentication level from the SAML assertion
+     * @param assertionElement
+     * @return
+     */
+    private String getSpidAuthnContextClassRef(Element assertionElement) {
+        Element authnStatementElement = getDirectChild(assertionElement, "AuthnStatement");
+        Element authnContextElement = getDirectChild(authnStatementElement, "AuthnContext");
+        Element authnContextClassRef = getDirectChild(authnContextElement, "AuthnContextClassRef");
+        String responseSpidLevel = authnContextClassRef.getFirstChild().getNodeValue();
+        return responseSpidLevel;
     }
 
     private String verifySpidResponse(Element documentElement, Element assertionElement, String expectedRequestId, String requestIssueInstant, String idpEntityId) {
